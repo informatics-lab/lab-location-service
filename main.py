@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 import sys
 
@@ -20,17 +21,20 @@ def hello_world():
 @app.route('/user/<username>', methods=['GET'])
 def show_user_location(username):
     try:
-        location = user_locations[username]
-    except KeyError:
+        location = user_locations[username]['location']
+        if user_locations[username]['update_time'].date() != datetime.today().date():
+            raise ValueError('That location is out of date')
+    except (KeyError, ValueError):
         location = "Unknown"
     return jsonify(username=username, location=location)
 
 @app.route('/user/<username>', methods=['POST'])
 def set_user_location(username):
-    info = request.get_json()
-    user_locations[username] = info["location"]
     if request.headers.get('Authorization') == "Bearer {}".format(AUTH_TOKEN):
+        info = request.get_json()
+        user_locations[username] = {'location': info["location"],
+                                    'update_time': datetime.now()}
         print(info["location"])
         return "ok"
     else:
-        return "not ok"
+        return jsonify(message='You are not authorized to do this.'), 403
