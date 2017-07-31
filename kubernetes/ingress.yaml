@@ -1,0 +1,22 @@
+# Ingress
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: locate.informaticslab.co.uk
+  namespace: lab-location
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  tls:
+  - hosts:
+    - locate.informaticslab.co.uk
+    secretName: lab-location-tls
+  rules:
+  - host: locate.informaticslab.co.uk
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: lab-location
+          servicePort: 80

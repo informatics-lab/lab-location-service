@@ -1,0 +1,27 @@
+# Deployment
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: lab-location
+  namespace: lab-location
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: lab-location
+    spec:
+      containers:
+        - image: informaticslab/lab-location-service:latest
+          imagePullPolicy: Always
+          name: lab-location
+          env:
+            - name: AUTH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: lab-location
+                  key: auth_token
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
