@@ -1,7 +1,7 @@
 FROM python:3
 
-COPY main.py
-COPY requirements.txt
+COPY main.py main.py
+COPY requirements.txt requirements.txt
 
 ENV FLASK_APP=main.py
 
