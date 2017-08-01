@@ -5,7 +5,7 @@ metadata:
   name: lab-location
   namespace: lab-location
 spec:
-  replicas: 1
+  replicas: 3
   template:
     metadata:
       labels:
@@ -21,6 +21,8 @@ spec:
                 secretKeyRef:
                   name: lab-location
                   key: auth_token
+            - name: MONGO_HOST
+              value: mongo.inlb
           resources:
             requests:
               cpu: 50m
