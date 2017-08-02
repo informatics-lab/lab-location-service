@@ -54,7 +54,7 @@ def set_location(username, location):
     document['username'] = username
     document['location'] = location
     document['update_time'] = datetime.now()
-    locations.insert_one(document)
+    locations.update_one({"username": username}, document, upsert=True)
 
 @app.route('/')
 def hello_world():
