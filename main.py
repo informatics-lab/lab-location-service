@@ -5,10 +5,12 @@ import time
 
 from flask import Flask, request
 from flask import jsonify
+from flask_cors import CORS, cross_origin
 import pymongo
 from pymongo import MongoClient
 
 app = Flask(__name__)
+CORS(app)
 db_connected = False
 
 print("Connecting to database.")
