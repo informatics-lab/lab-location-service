@@ -46,6 +46,7 @@ def get_location(username):
         raise KeyError("Cannot find user %s", username)
     if location['update_time'].date() != datetime.today().date():
         location["location"] = "unknown"
+        location["update_time"] = datetime.now()
     return location
 
 def set_location(username, location):
@@ -70,9 +71,10 @@ def show_user_location(username):
         return jsonify(message='Database is not connected'), 500
     try:
         location = get_location(username)['location']
+        update_time = get_location(username)['update_time'].isoformat()
     except (KeyError, ValueError):
         location = "unknown"
-    return jsonify(username=username, location=location)
+    return jsonify(username=username, location=location, update_time=update_time)
 
 @app.route('/user/<username>', methods=['POST'])
 def set_user_location(username):
